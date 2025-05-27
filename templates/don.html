@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Donate Form</title>
+    <style>
+        /* CSS Styles */
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Container Styling */
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        form input,
+        form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #bdc3c7;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        form button {
+            background-color: #27ae60;
+            border: none;
+            color: white;
+            padding: 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        form button:hover {
+            background-color: #229954;
+        }
+
+        /* Hidden fields for food donation */
+        .food-fields {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .container {
+                margin: 20px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Container -->
+    <div class="container">
+        <h1>Make a Donation</h1>
+        <form action="#" method="POST">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+
+            <label for="cause">Select a Cause</label>
+            <select id="cause" name="cause" onchange="toggleFoodFields()" required>
+                <option value="">-- Please choose an option --</option>
+                <option value="Education">Education Support</option>
+                <option value="Food">Food Donation</option>
+                <option value="Healthcare">Healthcare Assistance</option>
+                <option value="Shelter">Shelter Provision</option>
+            </select>
+
+            <!-- Food donation specific fields -->
+            <div class="food-fields" id="foodFields">
+                <label for="foodType">Type of Food</label>
+                <input type="text" id="foodType" name="foodType" placeholder="Enter the type of food">
+
+                <label for="foodQuantity">Quantity (e.g., kg, liters)</label>
+                <input type="text" id="foodQuantity" name="foodQuantity" placeholder="Enter the quantity of food">
+            </div>
+
+            <label for="amount">Donation Amount ($)</label>
+            <input type="number" id="amount" name="amount" placeholder="Enter donation amount" min="1" required>
+
+            <button type="submit">Donate Now</button>
+        </form>
+    </div>
+
+    <!-- JavaScript to toggle food fields -->
+    <script>
+        function toggleFoodFields() {
+            var causeSelect = document.getElementById('cause');
+            var foodFields = document.getElementById('foodFields');
+
+            if (causeSelect.value === 'Food') {
+                foodFields.style.display = 'block';  // Show the food-specific fields
+            } else {
+                foodFields.style.display = 'none';   // Hide the food-specific fields
+            }
+        }
+    </script>
+
+</body>
+</html>

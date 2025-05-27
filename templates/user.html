@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Project Donation - User Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #5D6D7E;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        .logout-button {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            background-color: #dc3545;
+            color: #fff;
+            padding: 8px 15px;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .logout-button:hover {
+            background-color: #c82333;
+        }
+        .donate-section {
+            background-color: #fff;
+            padding: 40px;
+            text-align: center;
+        }
+        .donate-section h2 {
+            margin-top: 0;
+        }
+        .donate-button {
+            background-color: #28a745;
+            color: #fff;
+            padding: 15px 30px;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-right: 10px; /* Add margin to space buttons apart */
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .donate-button:hover {
+            background-color: #218838;
+        }
+        .content {
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            margin-bottom: 40px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #5D6D7E;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .action-button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 8px 15px;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .action-button:hover {
+            background-color: #0069d9;
+        }
+        footer {
+            background-color: #5D6D7E;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            bottom: 0;
+            width: 100%;
+            position: fixed;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            width: 80%;
+            max-width: 500px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        input[type="text"], input[type="email"], input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Project Donation</h1>
+        <a href="/logout"><button class="logout-button">Logout</button></a>
+    </header>
+
+    <div class="donate-section">
+        <h2>Make a Difference Today!</h2>
+        <p>Your donation can help change lives.</p>
+        <a href="/payment"><button class="donate-button">Donate Now</button></a>
+        <button class="donate-button" onclick="document.getElementById('donationModal').style.display='block'">Donate</button>
+        <button class="donate-button" onclick="document.getElementById('requestModal').style.display='block'">Request Item</button>
+
+    </div>
+
+
+    <!-- Modal for Adding New Donation -->
+    <div id="donationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="document.getElementById('donationModal').style.display='none'">&times;</span>
+            <h2>Add New Donation</h2>
+            <form id="donationForm" method="post" action="{% url 'add_donation' %}">
+                {% csrf_token %}
+                <label for="name">Your Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Your Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="cause">Cause:</label>
+                <select id="cause" name="cause" required>
+                    <option value="Food">Food Donation</option>
+                    <option value="Education">Education Support</option>
+                    <option value="Healthcare">Healthcare Assistance</option>
+                    <option value="Shelter">Shelter Provision</option>
+                </select>
+
+                <label for="food_type">Food Type (if applicable):</label>
+                <input type="text" id="food_type" name="food_type">
+
+                <label for="food_quantity">Quantity:</label>
+                <input type="text" id="food_quantity" name="food_quantity" required>
+
+                <label for="amount">Amount:</label>
+                <input type="number" step="0.01" id="amount" name="amount" required>
+
+                <button type="submit">Submit Donation</button>
+            </form>
+        </div>
+    </div>
+ <!-- Modal for Adding New Request -->
+ <div id="requestModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="document.getElementById('requestModal').style.display='none'">&times;</span>
+        <h2>Request Item</h2>
+        <label for="item_requested">Item:</label>
+        <input type="text" id="item_requested" required>
+
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" min="1" required>
+
+        <button type="button" onclick="submitRequest()">Submit Request</button>
+    </div>
+</div>
+    <div class="content">
+        <!-- Picked Items Section -->
+        <h2>Available Items</h2>
+        <table>
+            <tr>
+                <th>Item Name</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            {% for item in picked_items %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.food_type }}</td>
+                <td>{{ item.food_quantity }}</td>
+                <td>{{ item.status }}</td>
+                <td>  <button class="action-button" onclick="document.getElementById('requestModal').style.display='block'">Request Item</button></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No items have been picked up yet.</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <!-- Orphanages Section -->
+        <h2>Orphanages</h2>
+        <table>
+            <tr>
+                <th>Orphanage Name</th>
+                <th>Location</th>
+                <th>Contact</th>
+                <th>Amount Needed</th>
+                <th>Action</th>
+            </tr>
+            {% for orphanage in orphanages %}
+            <tr>
+                <td>{{ orphanage.name }}</td>
+                <td>{{ orphanage.location }}</td>
+                <td>{{ orphanage.contact }}</td>
+                <td>${{ orphanage.amount_needed }}</td>
+                <td><a href="/payment">Donate</a></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No orphanages available at the moment.</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <!-- Educational Institutions Section -->
+        <h2>Educational Institutions</h2>
+        <table>
+            <tr>
+                <th>Institution Name</th>
+                <th>Type</th>
+                <th>Location</th>
+                <th>Amount Needed</th>
+                <th>Action</th>
+            </tr>
+            {% for institution in institutions %}
+            <tr>
+                <td>{{ institution.name }}</td>
+                <td>{{ institution.institution_type }}</td>
+                <td>{{ institution.location }}</td>
+                <td>${{ institution.amount_needed }}</td>
+                <td><a href="/payment">Donate</a></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No institutions available at the moment.</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Project Donation. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Close the modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('donationModal');
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        }
+
+
+        function submitRequest() {
+            const itemRequested = document.getElementById('item_requested').value;
+            const quantity = document.getElementById('quantity').value;
+
+            fetch("{% url 'add_request' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'  // CSRF token for security
+                },
+                body: JSON.stringify({ item_requested: itemRequested, quantity: quantity })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert(data.message);
+                    document.getElementById('requestModal').style.display = 'none';
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>

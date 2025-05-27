@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Form</title>
+    <style>
+        /* Global Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333333;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        label {
+            font-size: 14px;
+            color: #555555;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0 20px;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="number"]:focus,
+        input[type="tel"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .note {
+            text-align: center;
+            font-size: 12px;
+            color: #888888;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Make a Payment</h2>
+        <form method="POST">
+            {% csrf_token %}
+
+            <label for="name">Name:</label>
+            <input type="text" name="name" placeholder="Enter your name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" placeholder="Enter your email" required>
+
+            <label for="amount">Amount:</label>
+            <input type="number" name="amount" placeholder="Enter amount" required>
+
+            <label for="card_number">Card Number:</label>
+            <input type="tel" name="card_number" pattern="\d{16}" placeholder="Enter your card number (16 digits)" required>
+
+            <label for="expiry_date">Expiry Date:</label>
+            <input type="text" name="expiry_date" placeholder="MM/YY" required>
+
+            <label for="cvv">CVV:</label>
+            <input type="tel" name="cvv" pattern="\d{3}" placeholder="Enter 3-digit CVV" required>
+
+            <button type="submit" name="make_payment">Pay Now</button>
+        </form>
+
+        <div class="note">
+            <p>Your payment is simulated and no real money is involved.</p>
+        </div>
+    </div>
+</body>
+</html>
